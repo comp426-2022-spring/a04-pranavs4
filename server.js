@@ -1,3 +1,4 @@
+const fs = require("fs");
 const minimist = require("minimist");
 const args = minimist(process.argv.slice(2));
 const express = require('express');
@@ -26,17 +27,20 @@ if (args.help || args.h) {
 
 const logDB = require("./database.js");
 const morgan = require('morgan');
-const fs = require("fs");
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 
 args['port']
-const HTTP_PORT = args.port ? args.port : 5555;
-
+//const HTTP_PORT = args.port ? args.port : 5555;
+const port = args.port|| process.env.PORT || 5555
 // Start an app server
-const server = app.listen(HTTP_PORT, () => {
-    console.log('App listening on port %PORT%'.replace('%PORT%', HTTP_PORT))
+// const server = app.listen(HTTP_PORT, () => {
+//     console.log('App listening on port %PORT%'.replace('%PORT%', HTTP_PORT))
+// });
+
+const server = app.listen(port, () => {
+    console.log('App listening on port %PORT%'.replace('%PORT%', port))
 });
 
 if(args.log != false || args.log != "false") {
@@ -49,8 +53,8 @@ if(args.log != false || args.log != "false") {
 if(args.debug == true || args.debug == "true") {
     app.get("/app/log/access", (req, res) => {
         try{
-            const caught1 = logDB.prepare("SELECT * FROM accesslog").all()
-            res.status(200).json(caught1)
+            const caught1 = logDB.prepare("SELECT * FROM accesslog").all();
+            res.status(200).json(caught1);
         } 
         catch(error) {
             console.error(error);
