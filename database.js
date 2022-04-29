@@ -2,10 +2,10 @@
 const Database = require('better-sqlite3');
 
 // Connect to a database or create one if it doesn't exist yet.
-const db = new Database('log.db');
+const logDB = new Database('log.db');
 
 // Is the database initialized or do we need to initialize it?
-const stmt = db.prepare(`
+const stmt = logDB.prepare(`
     SELECT name FROM sqlite_master WHERE type='table' and name='accesslog';`
     );
 // Define row using `get()` from better-sqlite3
@@ -29,7 +29,7 @@ if (row === undefined) {
             useragent, TEXT 
             )  `;
 // Execute SQL commands that we just wrote above.
-    db.exec(sqlInit);
+    logDB.exec(sqlInit);
 // Echo information about what we just did to the console.
     console.log('Log DB has been initialized with a new table.');
 } else {
@@ -37,4 +37,4 @@ if (row === undefined) {
     console.log('Log DB already exists.')
 }
 // Export all of the above as a module so that we can use it elsewhere.
-module.exports = db
+module.exports = logDB
