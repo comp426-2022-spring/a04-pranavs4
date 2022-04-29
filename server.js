@@ -39,7 +39,7 @@ const server = app.listen(HTTP_PORT, () => {
     console.log('App listening on port %PORT%'.replace('%PORT%', HTTP_PORT))
 });
 
-if(args.log != false && args.log != "false") {
+if(args.log != false || args.log != "false") {
     console.log("Empty")
 } else {
     const accessLogStream = fs.createWriteStream("access.log", {flags: 'a'})
