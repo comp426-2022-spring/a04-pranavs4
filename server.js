@@ -4,9 +4,6 @@ const express = require('express');
 const app = express();
 
 args['port', 'debug', 'log', 'help'];
-// args['debug'];
-// args['log'];
-// args['help'];
 
 const help = (`
 
@@ -76,7 +73,7 @@ app.use((req, res, next) => {
         useragent: req.headers['user-agent']
     }
     const stmt = logDB.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-    const information = stmt.run(data.remoteaddr, data.remoteuser, data.time, data.method, data.url, data.protocol, data.httpversion, data.status, data.referer, data.useragent);
+    const information = stmt.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent);
     next();
 })
 
