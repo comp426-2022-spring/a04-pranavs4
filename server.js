@@ -50,7 +50,7 @@ const server = app.listen(HTTP_PORT, () => {
 if(args.log != false && args.log != "false") {
  
     // Not sure why this works but not the original "Select from access log"
-    const accessLogStream = fs.createWriteStream("access.log", {flags: 'a'})
+    const accessLogStream = fs.createWriteStream("accesslog", {flags: 'a'})
     app.use(morgan('combined', {stream :accessLogStream}))
 }
 
