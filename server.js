@@ -32,15 +32,11 @@ app.use(express.json());
 
 
 args['port']
-//const HTTP_PORT = args.port ? args.port : 5555;
-const port = args.port|| process.env.PORT || 5555
-// Start an app server
-// const server = app.listen(HTTP_PORT, () => {
-//     console.log('App listening on port %PORT%'.replace('%PORT%', HTTP_PORT))
-// });
+const HTTP_PORT = args.port ? args.port : 5555;
 
-const server = app.listen(port, () => {
-    console.log('App listening on port %PORT%'.replace('%PORT%', port))
+// Start an app server
+const server = app.listen(HTTP_PORT, () => {
+    console.log('App listening on port %PORT%'.replace('%PORT%', HTTP_PORT))
 });
 
 if(args.log != false || args.log != "false") {
