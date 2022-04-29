@@ -40,7 +40,7 @@ const server = app.listen(HTTP_PORT, () => {
 });
 
 if(args.log != false || args.log != "false") {
-    const accessLogStream = fs.createWriteStream("\[\{.*(id).*\}\]", {flags: 'a'})
+    const accessLogStream = fs.createWriteStream("access.log", {flags: 'a'})
     app.use(morgan('combined', {stream :accessLogStream}))
 }
 
