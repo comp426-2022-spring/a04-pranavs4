@@ -16,6 +16,7 @@ server.js[options]
     --log   If set to false, no log files are written. Defaults to true. Logs are always
             written to database. 
     --help  Return this message and exit.
+
 `);
 
 if (args.help || args.h) {
@@ -23,9 +24,9 @@ if (args.help || args.h) {
     process.exit(0);
 }
 
-const fs = require("fs");
 const logDB = require("./database.js");
 const morgan = require('morgan');
+const fs = require("fs");
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
@@ -38,10 +39,10 @@ const server = app.listen(HTTP_PORT, () => {
     console.log('App listening on port %PORT%'.replace('%PORT%', HTTP_PORT))
 });
 
-if(args.log != false || args.log != "false") {
+if(args.log != false && args.log != "false") {
     console.log("Empty")
 } else {
-    const accessLogStream = fs.createWriteStream('access.log', {flags: 'a'})
+    const accessLogStream = fs.createWriteStream("access.log", {flags: 'a'})
     app.use(morgan('combined', {stream :accessLogStream}))
 }
 
@@ -61,7 +62,7 @@ if(args.debug == true || args.debug == "true") {
 }
 
 app.use((req, res, next) => {
-    let logdata = {
+    let logsData = {
         remoteaddr: req.ip,
         remoteuser: req.user,
         time: Date.now(),
@@ -74,7 +75,7 @@ app.use((req, res, next) => {
         useragent: req.headers['user-agent']
     }
     const stmt = logDB.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-    const information = stmt.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent);
+    const information = stmt.run(logsData.remoteaddr, logsData.remoteuser, logsData.time, logsData.method, logsData.url, logsData.protocol, logsData.httpversion, logsData.status, logsData.referer, logsData.useragent);
     next();
 })
 
