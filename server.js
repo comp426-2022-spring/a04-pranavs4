@@ -39,7 +39,17 @@ const server = app.listen(HTTP_PORT, () => {
     console.log('App listening on port %PORT%'.replace('%PORT%', HTTP_PORT))
 });
 
-if(args.log != false || args.log != "false") {
+// if(args.log != false || args.log != "false") {
+//     console.log("Empty")
+// } else {
+//     // Not sure why this works but not the original "Select from access log"
+//     const accessLogStream = fs.createWriteStream("\[\{.*(id).*\}\]", {flags: 'a'})
+//     app.use(morgan('combined', {stream :accessLogStream}))
+// }
+
+if(args.log != false && args.log != "false") {
+ 
+    // Not sure why this works but not the original "Select from access log"
     const accessLogStream = fs.createWriteStream("access.log", {flags: 'a'})
     app.use(morgan('combined', {stream :accessLogStream}))
 }
