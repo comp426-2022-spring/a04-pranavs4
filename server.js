@@ -40,7 +40,7 @@ const server = app.listen(HTTP_PORT, () => {
     console.log('App listening on port %PORT%'.replace('%PORT%', HTTP_PORT))
 });
 
-if(args.log != true) {
+if(args.log != false && args.log != "false") {
     const accessLogStream = fs.createWriteStream('access.log', {flags: 'a'})
     app.use(morgan('combined', {stream :accessLogStream}))
 }
