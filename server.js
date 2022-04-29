@@ -50,14 +50,14 @@ const server = app.listen(HTTP_PORT, () => {
 if(args.log != false && args.log != "false") {
  
     // Not sure why this works but not the original "Select from access log"
-    const accessLogStream = fs.createWriteStream("accesslog", {flags: 'a'})
+    const accessLogStream = fs.createWriteStream("access.log", {flags: 'a'})
     app.use(morgan('combined', {stream :accessLogStream}))
 }
 
 if(args.debug == true || args.debug == "true") {
     app.get("/app/log/access", (req, res) => {
         try{
-            const caught1 = logDB.prepare("SELECT * FROM accesslog").all();
+            const caught1 = logDB.prepare("SELECT * FROM access.log").all();
             res.status(200).json(caught1);
         } 
         catch(error) {
@@ -82,7 +82,7 @@ app.use((req, res, next) => {
         referer: req.headers['referer'],
         useragent: req.headers['user-agent']
     }
-    const stmt = logDB.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    const stmt = logDB.prepare('INSERT INTO access.log (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
     const information = stmt.run(logsData.remoteaddr, logsData.remoteuser, logsData.time, logsData.method, logsData.url, logsData.protocol, logsData.httpversion, logsData.status, logsData.referer, logsData.useragent);
     next();
 })
