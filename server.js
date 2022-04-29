@@ -23,6 +23,7 @@ if (args.help || args.h) {
     process.exit(0);
 }
 
+const fs = require("fs");
 const logDB = require("./database.js");
 const morgan = require('morgan');
 app.use(express.urlencoded({extended: true}));
@@ -55,7 +56,7 @@ if(args.debug == true || args.debug == "true") {
         }   
     });
     app.get("/app/error", (req,res) => {
-        throw new Error("Error test succesful");
+        throw new Error("Error test succesful.");
     });
 }
 
