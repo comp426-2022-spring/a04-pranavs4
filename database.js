@@ -6,7 +6,7 @@ const logDB = new Database('log.db');
 
 // Is the database initialized or do we need to initialize it?
 const stmt = logDB.prepare(`
-    SELECT name FROM sqlite_master WHERE type='table' and name='access.log';`
+    SELECT name FROM sqlite_master WHERE type='table' and name='accesslog';`
     );
 // Define row using `get()` from better-sqlite3
 let row = stmt.get();
@@ -16,7 +16,7 @@ if (row === undefined) {
     console.log('Initializing empty Log DB');
 // Set a const that will contain your SQL commands to initialize the database.
     const sqlInit = `
-        CREATE TABLE access.log ( id INTEGER PRIMARY KEY, 
+        CREATE TABLE accesslog ( id INTEGER PRIMARY KEY, 
             remoteaddr TEXT, 
             remoteuser TEXT
             time INTEGER, 
