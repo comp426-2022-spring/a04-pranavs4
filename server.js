@@ -32,7 +32,7 @@ app.use(express.json());
 
 
 args['port']
-const HTTP_PORT = args.port ? args.port : 5555;
+const HTTP_PORT = args.port ? args.port : 5000;
 
 // Start an app server
 const server = app.listen(HTTP_PORT, () => {
@@ -42,15 +42,14 @@ const server = app.listen(HTTP_PORT, () => {
 // if(args.log != false || args.log != "false") {
 //     console.log("Empty")
 // } else {
-//     // Not sure why this works but not the original "Select from access log"
+//     // should be access log but outputting empty array
 //     const accessLogStream = fs.createWriteStream("\[\{.*(id).*\}\]", {flags: 'a'})
 //     app.use(morgan('combined', {stream :accessLogStream}))
 // }
 
 if(args.log != false && args.log != "false") {
  
-    // Not sure why this works but not the original "Select from access log"
-    const accessLogStream = fs.createWriteStream("accesslog", {flags: 'a'})
+    const accessLogStream = fs.createWriteStream("access.log", {flags: 'a'})
     app.use(morgan('combined', {stream :accessLogStream}))
 }
 
@@ -79,11 +78,11 @@ app.use((req, res, next) => {
         protocol: req.protocol,
         httpversion: req.httpVersion,
         status: res.statusCode,
-        referer: req.headers['referer'],
+        referrer: req.headers['referrer'],
         useragent: req.headers['user-agent']
     }
-    const stmt = logDB.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-    const information = stmt.run(logsData.remoteaddr, logsData.remoteuser, logsData.time, logsData.method, logsData.url, logsData.protocol, logsData.httpversion, logsData.status, logsData.referer, logsData.useragent);
+    const stmt = logDB.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referrer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    const information = stmt.run(logsData.remoteaddr, logsData.remoteuser, logsData.time, logsData.method, logsData.url, logsData.protocol, logsData.httpversion, logsData.status, logsData.referrer, logsData.useragent);
     next();
 })
 
@@ -143,7 +142,7 @@ app.get('/app/flip/call/tails', (req,res) => {
 // Default response for any other request
 app.use(function(req, res){
     res.status(404).end('Endpoint does not exist');
-    res.type("text/plain");
+    //res.type("text/plain");
 });
 
 /** Coin flip functions 
