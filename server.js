@@ -7,7 +7,6 @@ const app = express();
 args['port', 'debug', 'log', 'help'];
 
 const help = (`
-
 server.js[options]
     --port  Set the port number for the server to listen on. Must be an integer
                 between 1 and 65535.
@@ -17,7 +16,6 @@ server.js[options]
     --log   If set to false, no log files are written. Defaults to true. Logs are always
             written to database. 
     --help  Return this message and exit.
-
 `);
 
 if (args.help || args.h) {
@@ -212,23 +210,25 @@ app.use(function(req, res){
     //   "tails": tailCount
     // }
 
-    let heads = 0;
-    let tails = 0;
+    let headsCount = 0;
+    let tailsCount = 0;
 
     for(var x = 0; x < array.length; x++){
-        array[x] == "heads" ? heads++ : tails++
+        
+        array[x] == "heads" ? headsCount++ : tailsCount++
+    
     }
-    if(tails == 0) {
+    if(tailsCount == 0) {
         return {
-            heads : heads
+            heads : headsCount
         };
-    } else if(heads == 0) {
+    } else if(headsCount == 0) {
         return {
-            tails : tails
+            tails : tailsCount
         };
     } else {
         return {
-            heads: heads, tails: tails
+            heads: headsCount, tails: tailsCount
         };
     }
   }
@@ -248,7 +248,11 @@ app.use(function(req, res){
 
     let results = {call: call, flip: "", result: ""};
     results.flip = coinFlip();
-    results.result = results.flip === call ? "win" : "lose";
-    return results; 
-  }
+    callCheck(); 
 
+      function callCheck() {
+          results.result = results.flip === call ? "win" : "lose";
+      }
+
+    return results;
+  }
